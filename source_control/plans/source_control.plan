@@ -5,6 +5,26 @@
 		<propertyMappings/>
 	</component-mappings>
 
+<!-- (Alter Format) --><step mode="NORMAL" className="com.ataccama.dqc.tasks.flow.AlterFormat" disabled="false" id="Alter Format">
+		<properties>
+			<addedColumns>
+				<addedColumn name="sco_defualt" type="INTEGER"/>
+				<addedColumn name="exp_defualt" type="STRING"/>
+			</addedColumns>
+			<removedColumns/>
+		</properties>
+		<visual-constraints layout="vertical" bounds="240,264,-1,-1"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="Alter Format"/>
+		<target endpoint="in" step="Simple Scoring"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+
+
+
 <!-- (Column Assigner) --><step mode="NORMAL" className="com.ataccama.dqc.tasks.expressions.ColumnAssigner" disabled="false" id="Column Assigner">
 		<properties>
 			<assignments>
@@ -21,6 +41,24 @@
 	</step>
 	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
 		<source endpoint="out" step="Column Assigner"/>
+		<target endpoint="in" step="Alter Format"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+
+
+
+<!-- (Simple Scoring) --><step mode="NORMAL" className="com.ataccama.dqc.tasks.scoring.SimpleScoring" disabled="false" id="Simple Scoring">
+		<properties defaultScoreColumn="sco_defualt" defaultExplainColumn="exp_defualt">
+			<scoringCases>
+				<scoringCase score="1000" condition="src_type is null" description="Type Null" explanation="&quot;src_type is null&quot;"/>
+			</scoringCases>
+		</properties>
+		<visual-constraints layout="vertical" bounds="240,360,-1,-1"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="Simple Scoring"/>
 		<target endpoint="in" step="out"/>
 		<visual-constraints>
 			<bendpoints/>
@@ -76,7 +114,7 @@
 			<columns/>
 			<dataFormatParameters falseValue="false" dateTimeFormat="yyyy-MM-dd HH:mm:ss" decimalSeparator="." dayFormat="yyyy-MM-dd" trueValue="true" dateFormatLocale="en_US" thousandsSeparator=""/>
 		</properties>
-		<visual-constraints layout="vertical" bounds="240,264,-1,-1"/>
+		<visual-constraints layout="vertical" bounds="240,456,-1,-1"/>
 	</step>
 
 </purity-config>
